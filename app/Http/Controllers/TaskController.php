@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\RedirectResponse;
+
 use App\Models\Task;
 use App\Http\Requests\Task\StoreRequest;
+use App\Http\Requests\Task\UpdateRequest;
 
 class TaskController extends Controller
 {
@@ -61,9 +64,9 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Task $task)
     {
-        //
+        return view('task.edit')->with(compact('task'));
     }
 
     /**
@@ -73,9 +76,10 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, Task $task)
     {
-        //
+        DB::transaction(fn() => $task->update($request->validated()));
+        return to_route('tasks.index');
     }
 
     /**
@@ -88,4 +92,19 @@ class TaskController extends Controller
     {
         //
     }
+
+    public function complete(Task $task): RedirectResponse
+    {
+        DB::transaction(fn() => $task->update(['is_completed' => true]));
+        //dd($task);
+        return to_route('tasks.index');
+    }
+
+    public function yetComplete(Task $task): RedirectResponse
+    {
+        DB::transaction(fn() => $task->update(['is_completed' => false]));
+
+        return to_route('tasks.index');
+    }
+
 }

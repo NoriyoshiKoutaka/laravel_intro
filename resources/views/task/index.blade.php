@@ -45,34 +45,33 @@
                                 <div class="level-left">
                                 </div>
                                 <div class="level-right">
-                                    @if($task->is_completed)
-                                        <div class="level-item">
-                                            <form>
-                                                @csrf
-                                                @method('PATCH')
-                                                <span class="icon">
-                                                <button type="submit" class="has-text-link is-clickable"
-                                                        style="background: none; border: unset">
-                                                    <i class="fa-solid fa-toggle-off"></i>
-                                                </button>
-                                            </span>
-                                            </form>
-                                        </div>
-                                    @else
-                                        <div class="level-item">
-                                            <form>
-                                                @csrf
-                                                @method('PATCH')
-                                                <span class="icon">
-                                                <button type="submit" class="has-text-link is-clickable"
-                                                        style="background: none; border: unset">
-                                                    <i class="fa-solid fa-toggle-on"></i>
-                                                </button>
-                                            </span>
-                                            </form>
-                                        </div>
-                                    @endif
-
+                                @if($task->is_completed)
+                                    <div class="level-item">
+                                        <form method="post" action="{{ route('tasks.yet_complete', $task) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <span class="icon">
+                                            <button type="submit" class="has-text-link is-clickable"
+                                                    style="background: none; border: unset">
+                                                <i class="fa-solid fa-toggle-off"></i>
+                                            </button>
+                                        </span>
+                                        </form>
+                                    </div>
+                                @else
+                                    <div class="level-item">
+                                        <form method="post" action="{{ route('tasks.complete', $task) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <span class="icon">
+                                            <button type="submit" class="has-text-link is-clickable"
+                                                    style="background: none; border: unset">
+                                                <i class="fa-solid fa-toggle-on"></i>
+                                            </button>
+                                        </span>
+                                        </form>
+                                    </div>
+                                @endif
                                     <div class="level-item">
                                         <form>
                                             @csrf
@@ -86,7 +85,7 @@
                                         </form>
                                     </div>
                                     <div class="level-item">
-                                        <a href="{{ route('tasks.show', $task) }}">
+                                        <a href="{{ route('tasks.edit', $task) }}">
                                             <span class="icon">
                                                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                             </span>
