@@ -16,7 +16,10 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $tasks = Task::orderBy('is_completed')
+        ->orderBy('id')
+        ->get();
+        return view('task.index')->with(compact('tasks'));
     }
 
     /**
@@ -38,7 +41,7 @@ class TaskController extends Controller
     public function store(StoreRequest $request)
     {
         $task = DB::transaction(fn() => Task::create($request->validated()));
-        return response()->json($task);
+        return to_route('tasks.index');
     }
 
     /**
@@ -47,9 +50,9 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Task $task)
     {
-        //
+        return view('task.show')->with(compact('task'));
     }
 
     /**
