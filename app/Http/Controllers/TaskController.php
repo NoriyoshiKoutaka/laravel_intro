@@ -88,9 +88,11 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Task $task): RedirectResponse
     {
-        //
+        DB::transaction(fn() => $task->delete());
+        //dd($task);
+        return to_route('tasks.index');
     }
 
     public function complete(Task $task): RedirectResponse

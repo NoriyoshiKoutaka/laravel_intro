@@ -73,7 +73,7 @@
                                     </div>
                                 @endif
                                     <div class="level-item">
-                                        <form>
+                                        <form method="post" action="{{ route('tasks.destroy', $task) }}">
                                             @csrf
                                             @method('DELETE')
                                             <span class="icon">
